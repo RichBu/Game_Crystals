@@ -1,5 +1,5 @@
 
-/*  Global variables  for Hangman Game  */
+/*  Global variables  for Crystals Game  */
 
 /* These are al of the scripts to control the 
 
@@ -15,44 +15,7 @@
 
 const constWordLenMax = 20;
 
-var wordListCurr = [];
-var wordListStatus = [];        //0=normal unused   1=being used in game   -1=used already
-var wordListDictNmes = ["General", "Computer", "Technical", "Religious"];
-var wordListDict = [];
 
-var wordListUsed = [];
-var wordCurrAnswerStr = "";  //current answer in string form
-var wordCurrAnswerChar = [];
-
-var isWordListRandomPick = false;  //will we be using random picks from list ?
-var isWordListClearAcive = false;  //are we clearing the word list now ?
-
-
-// structure to hold the answer along with methods
-var answer = {
-    wordCurrAnswerStr: "",
-    wordCurrAnswerCapsStr: "",
-    wordCurrAnswerChar: [],
-
-    clear: function () {
-        this.wordCurrAnswerStr = "";
-        this.wordCurrAnswerCapsStr = "";
-        var stopVal = this.wordCurrAnswerChar.length;
-        for (var i = 0; i < stopVal; i++) {
-            this.wordCurrAnswerChar.pop();
-        }
-    },
-
-    loadFromDict: function (dictArrayIn, iDictNum, iWordNum) {
-        this.clear();
-        this.wordCurrAnswerStr = dictArrayIn[iDictNum][iWordNum];
-        this.wordCurrAnswerCapsStr = this.wordCurrAnswerStr.toUpperCase();
-        var stopVal = this.wordCurrAnswerStr.length;
-        for (i = 0; i < stopVal; i++) {
-            this.wordCurrAnswerChar[i] = this.wordCurrAnswerCapsStr.charAt(i);
-        }
-    }
-};
 
 var gameGuess = {
     resultsChr: [], //char array
@@ -127,74 +90,13 @@ var gameGuess = {
     },
 
     compPicksToAnswer: function (answerIn) {
-        //compare the letters picked to the answer and puts into results
-        this.numWrong = 0;
-        this.numCorrect = 0;
-
-        //loop thru every letter picked, then loop thru answer
-        var stopVal1 = this.lettersPicked.length;
-        var stopVal2 = answerIn.length;
-        for (var i = 0; i < stopVal1; i++) {
-            var noLetterFound = true;
-            for (var j = 0; j < stopVal2; j++) {
-                if (this.lettersPicked[i] === answerIn.charAt(j)) {
-                    //there is a match so index of results is same pos as answerIn
-                    this.numCorrect++;
-                    this.resultsChr[j] = answerIn.charAt(j);
-                    //check for duplicate letters to not put in two
-
-                    //don't push into the Good Str unless it isn't there alread
-                    //this.lettersGoodChr.push(answerIn.charAt(j));
-                    if ( this.lettersGoodStr.indexOf( this.lettersPicked[i] ) < 0 ) {
-                        this.lettersGoodChr.push(this.lettersPicked[i]);
-                        this.lettersGoodStr = this.lettersGoodStr + this.lettersPicked[i];
-                    };
-
-                    noLetterFound = false;
-                };
-            }
-            if (noLetterFound === true) {
-                //there was not a match
-                //this.resultsChr.push("_");  //push _ as a default
-                this.numWrong++;
-                this.lettersBadChr.push(answerIn.charAt(j));
-                this.lettersBadStr = this.lettersBadStr + this.lettersPicked[i];
-            }
-        };
-
-        this.numLeft = this.numLimit - this.numWrong;
-
-        if (stopVal2 > 0) {
-            //only make decisions if game is won, lost, or expired only if answer str is not a null
-            if (this.numCorrect === answerIn.length) {
-                //game over because won
-                this.isGameOverMatch = true;
-            }
-            if (this.numLeft <= 0) {
-                //took too many guesses
-                this.isGameOverLost = true;
-            }
-
-        };
+     
     },
 
     redrawResultsStr: function (answerIn) {
         //redraw (refill) the results str
         this.clearDisp();
-        //from the string coming in, setup the results array and string
-        var stopVal = answerIn.length;
-        for (var i = 0; i < stopVal; i++) {
-            this.resultsChr.push("_");  //push _ as a default
-        }
-        this.numCorrect = 0;
-
-        this.compPicksToAnswer(answerIn);
-        //load the results string from the char array
-        stopVal = this.resultsChr.length;
-        for (i = 0; i < stopVal; i++) {
-            this.resultsDispStr = this.resultsDispStr + this.resultsChr[i] + " ";  //will have extra space at end when done
-        }
-
+     
         //put strings out to display
         document.querySelector("#Disp-Results").textContent = this.resultsDispStr;
         document.querySelector("#Disp-PicksGood").textContent = this.lettersGoodStr;
@@ -209,56 +111,10 @@ var gameGuess = {
 
 
     pushLetterPicked: function (chrIn, answerStrIn) {
-        //takes inoming letter and pushes to the picked letters then redraws
-        //need incoming letter and answer string
-        //should already be upper case, but just to make sure
-        var chrWorking = chrIn.toUpperCase();
-
-        //check to see if user typed in the character already
-        var posKeyInStr = this.lettersPickedStr.indexOf(chrWorking);
-
-        if ((posKeyInStr >= 0) && (this.lettersPickedStr.length > 0)) {
-            modalKeyDup.style.display = "block";
-        } else {
-            this.numGuesses++;
-            this.lettersPicked.push(chrWorking);
-            this.lettersPickedStr = this.lettersPickedStr + chrWorking;
-            this.redrawResultsStr(answerStrIn);
-        };
-    }
+         }
 
 };
 
-
-
-var wordListObj = {
-    numDictToUse: 0,  //dictionary to use
-    numWordToUse: 0,  //word to use
-
-    loadWordFromDict: function (wordListDictIn) {
-        answer.loadFromDict(wordListDictIn, this.numDictToUse, this.numWordToUse);
-    },
-
-    pickNextWordFromDict: function (wordListDictIn) {
-        //takes the next word on list if there is one otherwise returns a false
-        var outVal = 0;  //=0 means good any other value is bad
-        if ((this.numWordToUse + 1) < wordListDictIn.length) {
-            //can increment
-            this.numWordToUse++;
-            answer.loadFromDict(wordListDictIn, this.numDictToUse, this.numWordToUse);
-        } else {
-            outVal = -1;
-        }
-    },
-
-    initValues: function () {
-        //resets the initial values
-        this.numDictToUse = 0;
-        this.numWordToUse = 0;
-        wordListLoadFromDict(this.numDictToUse);
-        wordListUsedClear();
-    }
-};
 
 
 var playObj = {
@@ -310,12 +166,10 @@ var playObj = {
     startNewGame: function () {
         //everything needed for a new game
         this.init();
-        answer.clear();
         gameGuess.init();
         gameGuess.isGameOverLost = false;
         gameGuess.isGameOverMatch = false;
         wordListObj.pickNextWordFromDict( wordListDict );
-        gameGuess.redrawResultsStr(answer.wordCurrAnswerCapsStr);
         playObj.displayCorrectPic(gameGuess);
     }
 };

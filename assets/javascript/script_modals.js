@@ -1,5 +1,5 @@
 
-/*  Scripts for Hangman Game  */
+/*  Scripts for Crystals Game  */
 
 /* These are al of the scripts to control the 
 
@@ -12,10 +12,10 @@
 
 // prepare the modals
 var modalHelp = document.getElementById('modHelp');
+var modalHelp2 = document.getElementById('modHelp2');
 var modalSettings = document.getElementById('modSettings');
 var modalHiScores = document.getElementById('modHiScores');
 var modalPlay = document.getElementById('modPlay');
-var modalWords = document.getElementById('modWords');
 var modalOverWon = document.getElementById('modOverWon');
 var modalOverLost = document.getElementById('modOverLost');
 var modalKeyDup = document.getElementById('modKeyDup');
@@ -25,6 +25,12 @@ var modalGameOver = document.getElementById('modGameOver');
 var btnHelp = document.getElementById("btnHelp");
 btnHelp.onclick = function () {
     modalHelp.style.display = "block";
+}
+var btnHelp2 = document.getElementById("btnHelp2");
+//wants the technical details, but could only 
+//get here by clicking button on the main help modal. So close the main modal
+btnHelp2.onclick = function () {
+    modalHelp2.style.display = "block";
 }
 var btnSettings = document.getElementById("btnSettings");
 btnSettings.onclick = function () {
@@ -39,29 +45,16 @@ btnPlay.onclick = function () {
     modalPlay.style.display = "block";
 }
 
-var btnWords = document.getElementById("btnWords");
-btnWords.onclick = function () {
-    modalWords.style.display = "block";
-    document.querySelector("#lblMW-Answer").textContent = answer.wordCurrAnswerCapsStr;
-    document.querySelector("#lblMW-Dict").textContent = wordListDictNmes[wordListObj.numDictToUse];
-    var dispAnswer = document.getElementById("lblMW-Answer");
-    dispAnswer.style.display = "none";
-}
 
-var btnDispAnswer2 = document.getElementById("btnDispAnswer");
-btnDispAnswer2.onclick = function () {
-    var dispAnswer = document.getElementById("lblMW-Answer");
-    dispAnswer.style.display = "block";
-}
 
 
 // Get the <span> element that closes the modal
 //var closeModHelp = document.getElementsByClassName("close")[0];
 var closeModHelp = document.getElementById("closeModHelp");
+var closeModHelp2 = document.getElementById("closeModHelp2");
 var closeModSettings = document.getElementById("closeModSettings");
 var closeModHiScores = document.getElementById("closeModHiScores");
 var closeModPlay = document.getElementById("closeModPlay");
-var closeModWords = document.getElementById("closeModWords");
 var closeModOverWon = document.getElementById("closeModOverWon");
 var closeModOverLost = document.getElementById("closeModOverLost");
 var closeModKeyDup = document.getElementById("closeModKeyDup");
@@ -72,6 +65,9 @@ var closeModGameOver = document.getElementById("closeModGameOver");
 closeModHelp.onclick = function () {
     modalHelp.style.display = "none";
 }
+closeModHelp2.onclick = function () {
+    modalHelp2.style.display = "none";
+}
 closeModSettings.onclick = function () {
     modalSettings.style.display = "none";
 }
@@ -80,9 +76,6 @@ closeModHiScores.onclick = function () {
 }
 closeModPlay.onclick = function () {
     modalPlay.style.display = "none";
-}
-closeModWords.onclick = function () {
-    modalWords.style.display = "none";
 }
 
 closeModOverWon.onclick = function () {
@@ -109,6 +102,10 @@ window.onclick = function (event) {
     if (event.target == modalHelp) {
         modalHelp.style.display = "none";
     }
+    if (event.target == modalHelp2) {
+        //might want to close both help windows
+        modalHelp2.style.display = "none";
+    }
     if (event.target == modalSettings) {
         modalSettings.style.display = "none";
     }
@@ -117,9 +114,6 @@ window.onclick = function (event) {
     }
     if (event.target == modalPlay) {
         modalPlay.style.display = "none";
-    }
-    if (event.target == modalWords) {
-        modalWords.style.display = "none";
     }
     if (event.target == modalOverWon) {
         modalOverWon.style.display = "none";

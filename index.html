@@ -15,6 +15,9 @@
     <title>Rich Budek's Crystals Game Demo</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
+    <!-- load in a reset of CSS  -->
+    <!-- *RPB  redo the styles after loading in the rest.css  -->
+    <!-- <link rel="stylesheet" type="text/css" href="assets/css/reset.css">   -->
     <!-- load my style sheet -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <!-- load FontAwesome -->
@@ -35,13 +38,13 @@
                 <div class="visible-lg-block visible-md-block hidden-sm hidden-xs">
                     <!-- <div>  -->
                     <p>
-                        <h1>Hangman Demo</h1>
+                        <h1>Crystals</h1>
                     </p>
                 </div>
                 <div class="hidden-lg hidden-md visible-sm-block visible-xs-block">
                     <!-- <div>  -->
                     <p>
-                        <h1>Hangman</h1>
+                        <h1>Crystals</h1>
                     </p>
                 </div>
             </div>
@@ -54,7 +57,6 @@
                 </div>
                 <div class="row ">
                     <!-- This is the column with buttons -->
-                    <button style="Float: left; " id="btnWords" class="bigButton " data-toggle="tooltip " title="View answer, word lists, and dictionaries ">WORDS </button>
                     <button style="Float: left; " id="btnPlay" class="bigButton " data-toggle="tooltip " title="Play the game ">PLAY </button>
                     <button style="Float: left; " id="btnHiScores" class="bigButton " data-toggle="tooltip " title="high scores ">HI SCORES</button>
                     <button style="Float: left; " id="btnHelp" class="bigButton " data-toggle="tooltip " title="Help and about ">
@@ -125,31 +127,7 @@
                 </aside>
             </div>
         </div>
-        <div class="row " style="height: 20pt ">
-            <p></p>
-        </div>
-        <div class="row ">
-            <div class="panel panel-info guessDispBox ">
-                <div class="panel-heading ">
-                    <span id="Disp-Results">answer goes here</span>
-                </div>
-            </div>
-        </div>
-        <div class="row " style="height: 5pt ">
-            <p></p>
-        </div>
-        <div class="row ">
-            <div class="panel panel-info guessDispBox ">
-                <div class="panel-body">
-                    <span style="color:forestgreen; "></span>
-                    <span id="Disp-PicksGood" style="color:forestgreen; ">good letter</span>
-                    <span> </span>
-                    <span style="color: red; "></span>
-                    <span id="Disp-PicksBad" style="color: red; ">bad letter</span>
-                </div>
-            </div>
-        </div>
-
+ 
     </div>
     <!-- main row -->
 
@@ -193,17 +171,17 @@
     </div>
     <!-- Game Over -->
     <div id="modGameOver" class="modal">
-            <div class="modal-content">
-                <span id="closeModGameOver" class="close">&times;</span>
-                <h2>
-                    <p>Game is Over</p>
-                </h2>
-                <p> </p>
-                <p>To play again, press the PLAY button and then pick NEW GAME</p>
-                <p>To view the answer again, press the WORDS button and then click on Answer</p>
-            </div>
+        <div class="modal-content">
+            <span id="closeModGameOver" class="close">&times;</span>
+            <h2>
+                <p>Game is Over</p>
+            </h2>
+            <p> </p>
+            <p>To play again, press the PLAY button and then pick NEW GAME</p>
+            <p>To view the answer again, press the WORDS button and then click on Answer</p>
         </div>
-    
+    </div>
+
 
     <!-- Settings Modal -->
     <div id="modSettings" class="modal">
@@ -222,16 +200,42 @@
             <h4>
                 <p>Help / About</p>
             </h4>
-            <p>Hangman Game Demonstration by Rich Budek</p>
+            <p>Crystals Demonstration Game by Rich Budek</p>
+            <p></p>
+            <p>This game is meant to run inside of a browser.
+            </p>
+            <p>When the game starts, you are given a target from 19 to 120 that you must match. Each gem stone is given a random
+                number from 1 to 12, but you do not see the score. By clicking on a stone, you collect the stones and the game
+                gives you your score.
+            </p>
+            <p> </p>
+            <p>You win the game when you match the target score exactly</p>
+            <p>You lose the game when the stones you collect exceed your target.
+            </p>
+            <div class="modal-footer">
+                <span>
+                    <button style="Float: left; " id="btnHelp2" class="btn btn-default bigButton " data-toggle="tooltip " title="Get technical details">Technical Details</button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <!-- Help Modal -->
+    <div id="modHelp2" class="modal">
+        <div class="modal-content">
+            <span id="closeModHelp2" class="close">&times;</span>
+            <h4>
+                <p>Help / About</p>
+            </h4>
+            <p>Crystals Demonstration by Rich Budek</p>
             <p></p>
             <p>This game is meant to run inside of a browser using HTML and CSS for styling. Twitters BootStrap is used for
                 some of the more advanced display functions and popups.
             </p>
-            <p>Javascript is the language that does all of the processing and also manipulates the page's element's using document.querySelect().
-                The image of the hangman is manipulate by Javascript changing the .src and bringing in  simple .png files.
+            <p>Javascript and jQuery are the languages that do all of the processing and also manipulates the page's element's
+                using jQuery.  All the crystals are stored as objects in an array and then placed into the collection area using jAppend.
             </p>
             <p>The windows is responsive (liquid) will change based on the size of the screen, with buttons moving, etc. as
-                the screen width changes.  Dialog is presented to the user using modals.
+                the screen width changes. Dialog is presented to the user using modals.
             </p>
         </div>
     </div>
@@ -254,6 +258,7 @@
                     <p>Play the Game</p>
                 </h4>
                 <p></p>
+                <p>Enter your name: </p>
                 <div class="modal-footer">
                     <span>
                         <button style="Float: left; " id="btnNewGame" class="btn btn-default bigButton " data-toggle="tooltip " title="Pick another word and play the game">New Game</button>
@@ -262,45 +267,8 @@
             </div>
         </div>
     </div>
-    <!-- Words Modal -->
-    <div id="modWords" class="modal">
-        <div class="modal-content">
-            <span id="closeModWords" class="close">&times;</span>
-            <h4>
-                <p>Words used by game</p>
-            </h4>
-            <p>Words are pulled from several "dictionaries"</p>
-            <p></p>
-            <!-- setup the wrapper as a column  -->
-            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">  -->
-            <div class="row">
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" data-toggle="tooltip" title="If you want to cheat, click here" id="btnDispAnswer">
-                    <div class="panel panel-info">
-                        <div class="panel-heading panelMinPadding">
-                            <span>answer</span>
-                        </div>
-                        <div class="panel-body panelMinPadding">
-                            <span id="lblMW-Answer" style="display: none;">none</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" data-toggle="tooltip" title="which dictionary is being used">
-                    <div class="panel panel-info">
-                        <div class="panel-heading panelMinPadding">
-                            <span>dictionary</span>
-                        </div>
-                        <div class="panel-body panelMinPadding">
-                            <span id="lblMW-Dict">none</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- </div>  -->
-
-        </div>
-    </div>
     <!-- end of modal windows -->
-    
+
     <div class="footer ">
         <span class="label label-default ">Copyright &COPY; 2018 Rich Budek</span>
     </div>
@@ -311,7 +279,6 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js "></script>
 
     <!-- load my custom js for this project -->
-    <script src="assets/javascript/reset.js "></script>
     <script src="assets/javascript/script_globals.js "></script>
     <script src="assets/javascript/script.js "></script>
     <script src="assets/javascript/script_modals.js "></script>
@@ -322,47 +289,20 @@
         function evalEntry(charIn) {
             //the character coming in can come from mobile entry
             //or the keyboard
-            var keyPressChar = charIn
-            var okToEvaluate = true;  //conditions to evaluate if should continue
-            if (gameGuess.isGameOverLost || gameGuess.isGameOverMatch) {
-                //there was a determination of won or lost, so game over
-                //tell user he needs to pick Play Again
-                modalGameOver.style.display = "block";
-            } else if (answer.wordCurrAnswerCapsStr.length <= 0) {
-                //game is not over, make sure it's not blank
-            } else {
-                //game not over and not a new game, so evaluate the keypress
-                var userGuessChar = keyPressChar.toUpperCase();
-                gameGuess.pushLetterPicked(userGuessChar, answer.wordCurrAnswerCapsStr);
-                playObj.displayCorrectPic(gameGuess);
-                if (gameGuess.isGameOverMatch === true) {
-                    modalOverWon.style.display = "block";
-                }
-                if (gameGuess.isGameOverLost === true) {
-                    modalOverLost.style.display = "block";
-                    var modalLostAnswerText = document.getElementById('modLostAnswer');
-                    modalLostAnswerText.textContent = "answer was: " + " " + answer.wordCurrAnswerCapsStr;
-                }
-            };
         };
 
 
         //activate BootStrap tool tips
+        //but don't turn on for phone / tablet
         $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
 
         //initialize once on startup  will also be the play button
         gameGuess.init();
-        gameGuess.redrawResultsStr(answer.wordCurrAnswerCapsStr);
-        playObj.displayCorrectPic(gameGuess);
 
         //here is the main loop now for key presses
         document.onkeyup = function (event) {
-            var keyPressChar = "a";  //just to make sure it is a character
-            // Determines which key was pressed.
-            keyPressChar = event.key;
-            evalEntry(keyPressChar);
         }
 
     </script>
