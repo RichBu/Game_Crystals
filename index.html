@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="eng-us">
+
+
+<!--  index.html  of Hangman game -->
+
+<!-- by Rich Budek  01/30/2018        -->
+<!-- for NU Bootcamp.  Hangman    -->
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Rich Budek's Hangman Game Demo</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <!-- load my style sheet -->
+    <link rel="stylesheet" type="text/css" href="assets/style.css">
+    <!-- load FontAwesome -->
+    <script src="https://use.fontawesome.com/f41d7d3328.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-default" id="navBarCommon">
+        <!--  NavBar is loaded in JS based on id="navBarCommon" -->
+        <!--  this makes the NavBar be the same across all the web pages -->
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- top row, make it two columns for smaller screens -->
+            <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
+                <!-- This is coumn of heading -->
+                <div class="visible-lg-block visible-md-block hidden-sm hidden-xs">
+                    <!-- <div>  -->
+                    <p>
+                        <h1>Hangman Demo</h1>
+                    </p>
+                </div>
+                <div class="hidden-lg hidden-md visible-sm-block visible-xs-block">
+                    <!-- <div>  -->
+                    <p>
+                        <h1>Hangman</h1>
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-8 col-sm-6 col xs-6 ">
+                <!--                    <div class="row visible-lg-block visible-md-block hidden-sm hidden-xs">   -->
+                <div class="row">
+                    <p>
+                        <h2> </h2>
+                    </p>
+                </div>
+                <div class="row ">
+                    <!-- This is the column with buttons -->
+                    <button style="Float: left; " id="btnWords" class="bigButton " data-toggle="tooltip " title="View answer, word lists, and dictionaries ">WORDS </button>
+                    <button style="Float: left; " id="btnPlay" class="bigButton " data-toggle="tooltip " title="Play the game ">PLAY </button>
+                    <button style="Float: left; " id="btnHiScores" class="bigButton " data-toggle="tooltip " title="high scores ">HI SCORES</button>
+                    <button style="Float: left; " id="btnHelp" class="bigButton " data-toggle="tooltip " title="Help and about ">
+                        <span class="glyphicon glyphicon-info-sign "></span>
+                    </button>
+                    <button style="Float: left; " id="btnSettings" class="bigButton " data-toggle="tooltip " title="Settings for game ">
+                        <span class="glyphicon glyphicon-cog "></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row ">
+            <!-- main wrapper is row of two columns -->
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                <!-- left hand colmn is two rows -->
+                <div class="row ">
+                </div>
+                <!-- after the about me header, there is a row with 2 columns -->
+                <div class="row ">
+                    <!-- wrap the left side with "article " tag for SEO engines -->
+                    <div>
+                        <!-- article is two colunns -->
+                        <img id="manPic" src="http://placehold.it/150x150" alt="Placeholder " class="img-thumbnail img-responsive">
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
+                <aside>
+                    <div class="row ">
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                            <div class="panel panel-info panelMinMargin ">
+                                <div class="panel-heading panelMinPadding ">
+                                    <span>total</span>
+                                </div>
+                                <div class="panel-body panelMinPadding ">
+                                    <span id="lblStatNumGuesses" style="display: block; ">--</span>
+                                </div>
+                            </div>
+                            <div class="panel panel-info panelMinMargin ">
+                                <div class="panel-heading panelMinPadding ">
+                                    <span>left</span>
+                                </div>
+                                <div class="panel-body panelMinPadding ">
+                                    <span id="lblStatGuessesLeft" style="display: block; ">--</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
+                            <div class="panel panel-info panelMinMargin ">
+                                <div class="panel-heading panelMinPadding ">
+                                    <span>wrong</span>
+                                </div>
+                                <div class="panel-body panelMinPadding ">
+                                    <span id="lblStatNumWrong" style="display: block; ">--</span>
+                                </div>
+                            </div>
+                            <div class="panel panel-info panelMinMargin ">
+                                <div class="panel-heading panelMinPadding ">
+                                    <span>correct</span>
+                                </div>
+                                <div class="panel-body panelMinPadding ">
+                                    <span id="lblStatNumCorrect" style="display: block; ">--</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </div>
+        <div class="row " style="height: 20pt ">
+            <p></p>
+        </div>
+        <div class="row ">
+            <div class="panel panel-info guessDispBox ">
+                <div class="panel-heading ">
+                    <span id="Disp-Results">answer goes here</span>
+                </div>
+            </div>
+        </div>
+        <div class="row " style="height: 5pt ">
+            <p></p>
+        </div>
+        <div class="row ">
+            <div class="panel panel-info guessDispBox ">
+                <div class="panel-body">
+                    <span style="color:forestgreen; "></span>
+                    <span id="Disp-PicksGood" style="color:forestgreen; ">good letter</span>
+                    <span> </span>
+                    <span style="color: red; "></span>
+                    <span id="Disp-PicksBad" style="color: red; ">bad letter</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- main row -->
+
+
+    <!-- Modal windows come up next -->
+    <!--   Modal test windows until rest of logic is complete  -->
+    <!-- Won Modal -->
+    <div id="modOverWon" class="modal">
+        <div class="modal-content">
+            <span id="closeModOverWon" class="close">&times;</span>
+            <h2>
+                <p>You Won !!!</p>
+            </h2>
+            <p> </p>
+            <p>To play again, press the PLAY button and then pick NEW GAME</p>
+        </div>
+    </div>
+    <!-- lost Modal -->
+    <div id="modOverLost" class="modal">
+        <div class="modal-content">
+            <span id="closeModOverLost" class="close">&times;</span>
+            <h2>
+                <p>Sorry you lost</p>
+            </h2>
+            <p> </p>
+            <p id="modLostAnswer"></p>
+            <p>To play again, press the PLAY button and then pick NEW GAME</p>
+        </div>
+    </div>
+    <!-- Key Duplicate modal -->
+    <div id="modKeyDup" class="modal">
+        <div class="modal-content">
+            <span id="closeModKeyDup" class="close">&times;</span>
+            <h2>
+                <p>You tried that already</p>
+            </h2>
+            <p> </p>
+            <p>I would really like to take some points away for trying the same letter again I won't. Do you really expect a
+                different result ?</p>
+        </div>
+    </div>
+    <!-- Game Over -->
+    <div id="modGameOver" class="modal">
+            <div class="modal-content">
+                <span id="closeModGameOver" class="close">&times;</span>
+                <h2>
+                    <p>Game is Over</p>
+                </h2>
+                <p> </p>
+                <p>To play again, press the PLAY button and then pick NEW GAME</p>
+                <p>To view the answer again, press the WORDS button and then click on Answer</p>
+            </div>
+        </div>
+    
+
+    <!-- Settings Modal -->
+    <div id="modSettings" class="modal">
+        <div class="modal-content">
+            <span id="closeModSettings" class="close">&times;</span>
+            <h4>
+                <p>Settings for the game</p>
+            </h4>
+            <p>These are the global settings to be used throughout the game</p>
+        </div>
+    </div>
+    <!-- Help Modal -->
+    <div id="modHelp" class="modal">
+        <div class="modal-content">
+            <span id="closeModHelp" class="close">&times;</span>
+            <h4>
+                <p>Help / About</p>
+            </h4>
+            <p>Hangman Game Demonstration by Rich Budek</p>
+            <p></p>
+            <p>This game is meant to run inside of a browser using HTML and CSS for styling. Twitters BootStrap is used for
+                some of the more advanced display functions and popups.
+            </p>
+            <p>Javascript is the language that does all of the processing and also manipulates the page's element's using document.querySelect().
+                The image of the hangman is manipulate by Javascript changing the .src and bringing in  simple .png files.
+            </p>
+            <p>The windows is responsive (liquid) will change based on the size of the screen, with buttons moving, etc. as
+                the screen width changes.  Dialog is presented to the user using modals.
+            </p>
+        </div>
+    </div>
+    <!-- Hi-Scores Modal -->
+    <div id="modHiScores" class="modal">
+        <div class="modal-content">
+            <span id="closeModHiScores" class="close">&times;</span>
+            <h4>
+                <p>Hi-Scores for this Game</p>
+            </h4>
+            <p>Since no high scores are being listed, I guess Rich Budek has the high score</p>
+        </div>
+    </div>
+    <!-- Play Modal -->
+    <div id="modPlay" class="modal" role="dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <span id="closeModPlay" class="close">&times;</span>
+                <h4>
+                    <p>Play the Game</p>
+                </h4>
+                <p></p>
+                <div class="modal-footer">
+                    <span>
+                        <button style="Float: left; " id="btnNewGame" class="btn btn-default bigButton " data-toggle="tooltip " title="Pick another word and play the game">New Game</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Words Modal -->
+    <div id="modWords" class="modal">
+        <div class="modal-content">
+            <span id="closeModWords" class="close">&times;</span>
+            <h4>
+                <p>Words used by game</p>
+            </h4>
+            <p>Words are pulled from several "dictionaries"</p>
+            <p></p>
+            <!-- setup the wrapper as a column  -->
+            <!-- <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">  -->
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" data-toggle="tooltip" title="If you want to cheat, click here" id="btnDispAnswer">
+                    <div class="panel panel-info">
+                        <div class="panel-heading panelMinPadding">
+                            <span>answer</span>
+                        </div>
+                        <div class="panel-body panelMinPadding">
+                            <span id="lblMW-Answer" style="display: none;">none</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3" data-toggle="tooltip" title="which dictionary is being used">
+                    <div class="panel panel-info">
+                        <div class="panel-heading panelMinPadding">
+                            <span>dictionary</span>
+                        </div>
+                        <div class="panel-body panelMinPadding">
+                            <span id="lblMW-Dict">none</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- </div>  -->
+
+        </div>
+    </div>
+    <!-- end of modal windows ->
+    
+    <div class="footer ">
+        <span class="label label-default ">Copyright &COPY; 2018 Rich Budek</span>
+    </div>
+
+
+    <!--  Load Javascript libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js "></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js "></script>
+
+    <!-- load my custom js for this project -->
+    <script src="assets/script_globals.js "></script>
+    <script src="assets/script.js "></script>
+    <script src="assets/script_modals.js "></script>
+    <script src="assets/script_words.js "></script>
+    <script src="assets/script_play.js "></script>
+    <script>
+
+        function evalEntry(charIn) {
+            //the character coming in can come from mobile entry
+            //or the keyboard
+            var keyPressChar = charIn
+            var okToEvaluate = true;  //conditions to evaluate if should continue
+            if (gameGuess.isGameOverLost || gameGuess.isGameOverMatch) {
+                //there was a determination of won or lost, so game over
+                //tell user he needs to pick Play Again
+                modalGameOver.style.display = "block";
+            } else if (answer.wordCurrAnswerCapsStr.length <= 0) {
+                //game is not over, make sure it's not blank
+            } else {
+                //game not over and not a new game, so evaluate the keypress
+                var userGuessChar = keyPressChar.toUpperCase();
+                gameGuess.pushLetterPicked(userGuessChar, answer.wordCurrAnswerCapsStr);
+                playObj.displayCorrectPic(gameGuess);
+                if (gameGuess.isGameOverMatch === true) {
+                    modalOverWon.style.display = "block";
+                }
+                if (gameGuess.isGameOverLost === true) {
+                    modalOverLost.style.display = "block";
+                    var modalLostAnswerText = document.getElementById('modLostAnswer');
+                    modalLostAnswerText.textContent = "answer was: " + " " + answer.wordCurrAnswerCapsStr;
+                }
+            };
+        };
+
+
+        //activate BootStrap tool tips
+        $(document).ready(function () {
+            $('[data-toggle="tooltip"]').tooltip();
+        });
+
+        //initialize once on startup  will also be the play button
+        gameGuess.init();
+        gameGuess.redrawResultsStr(answer.wordCurrAnswerCapsStr);
+        playObj.displayCorrectPic(gameGuess);
+
+        //here is the main loop now for key presses
+        document.onkeyup = function (event) {
+            var keyPressChar = "a";  //just to make sure it is a character
+            // Determines which key was pressed.
+            keyPressChar = event.key;
+            evalEntry(keyPressChar);
+        }
+
+    </script>
+</body>
+
+</html>
