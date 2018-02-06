@@ -153,6 +153,7 @@
                 <p>You Won !!!</p>
             </h2>
             <p> </p>
+            <p id="modWonAnswer"> </p>
             <p>To play again, press the PLAY button and then pick NEW GAME</p>
         </div>
     </div>
@@ -192,9 +193,22 @@
             <p>To view the answer again, press the WORDS button and then click on Answer</p>
         </div>
     </div>
+    <!-- MODAL GameBlank -->
+    <div id="modGameBlank" class="modal">
+        <div class="modal-content">
+            <span id="closeModGameBlank" class="close">&times;</span>
+            <h2>
+                <p>No Game</p>
+            </h2>
+            <p> </p>
+            <p>No game has been started. To familiarize yourself with the play, click the Info button.
+            </p>
+            <p>To begin play, press the PLAY button and then pick NEW GAME</p>
+        </div>
+    </div>
 
 
-    <!-- Settings Modal -->
+    <!-- MODAL Settings  -->
     <div id="modSettings" class="modal">
         <div class="modal-content">
             <span id="closeModSettings" class="close">&times;</span>
@@ -202,6 +216,11 @@
                 <p>Settings for the game</p>
             </h4>
             <p>These are the global settings to be used throughout the game</p>
+            <div class="modal-footer">
+                <span>
+                    <button style="Float: left; " id="btnSetCheat" class="btn btn-default bigButton " data-toggle="tooltip " title="Sets left crystal (blue heart) for a value of 1 so can win for sure">Cheat</button>
+                </span>
+            </div>
         </div>
     </div>
     <!-- Help Modal -->
@@ -216,13 +235,15 @@
             <p>This game is meant to run inside of a browser.
             </p>
             <p>When the game starts, you are given a target from 19 to 120 that you must match. Each gem stone is given a random
-                number from 1 to 12, but you do not see the score. By clicking on a stone, you collect the stones and the
+                number from 1 to 12, but you do not see that value. By clicking on a stone, you collect the stones and the
                 game gives you your score.
             </p>
             <p> </p>
             <p>You win the game when you match the target score exactly</p>
             <p>You lose the game when the stones you collect exceed your target.
             </p>
+            <p>CHEATING: if you can't win and want to check out what a win looks like, from the settings click the Cheat button.
+                This will set the left most crystal to 1 ensuring you can win.</p>
             <div class="modal-footer">
                 <span>
                     <button style="Float: left; " id="btnHelp2" class="btn btn-default bigButton " data-toggle="tooltip " title="Get technical details">Technical Details</button>
@@ -273,7 +294,7 @@
                 <p>Enter your name: </p>
                 <div class="modal-footer">
                     <span>
-                        <button style="Float: left; " id="btnNewGame" class="btn btn-default bigButton " data-toggle="tooltip " title="Pick another word and play the game">New Game</button>
+                        <button style="Float: left; " id="btnNewGame" class="btn btn-default bigButton " data-toggle="tooltip " title="Start a new game">New Game</button>
                     </span>
                 </div>
             </div>
@@ -325,28 +346,34 @@
                 bttnImgString = '<img src="' + allCrystals[i].fileName + '">';
                 bttnImgNew = $(bttnImgString);
                 //add value of crystal to the attr flag
-                bttnNew.attr("data-crystal",i);
-                bttnNew.on( "click", evalButtonPress );
+                bttnNew.attr("data-crystal", i);
+                bttnNew.on("click", evalButtonPress);
                 bttnNew.append(bttnImgNew);
                 buttonRowDiv.append(bttnNew);
                 //$("#buttonRow").append(bttnNew);
             };
 
             gameObj.init();   //init all the game variables
-            gameObj.update( allCrystals );  //recalc all the crystals
-            gameObj.redraw( configData );
+            gameObj.isGameOver = true;  //first time thru loop, set game over
+            gameObj.update(allCrystals);  //recalc all the crystals
+            gameObj.redraw(configData);
 
 
 
             function evalButtonPress() {
                 //the character coming in can come from mobile entry
                 //or the keyboard
-                var currentClickedBttn = $(this);
-                var buttonVal = currentClickedBttn.attr("data-crystal");
-                allCrystals[buttonVal].qtyPicked++;
-                gameObj.update( allCrystals );
-                gameObj.redraw( configData );
-                console.log( "button clicked" + " " + buttonVal );
+                if (gameObj.isGameOver) {
+                    //game ended so display the won or lost
+                    gameObj.displayWonLost(allCrystals);
+                } else {
+                    var currentClickedBttn = $(this);
+                    var buttonVal = currentClickedBttn.attr("data-crystal");
+                    allCrystals[buttonVal].qtyPicked++;
+                    gameObj.update(allCrystals);
+                    gameObj.redraw(configData);
+                    gameObj.displayWonLost(allCrystals);
+                };
             };
 
 

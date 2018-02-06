@@ -13,6 +13,7 @@
     var modalKeyDup = document.getElementById('modKeyDup');
 
     var btnNewGame = document.getElementById("btnNewGame");
+    var btnSetCheat = document.getElementById("btnSetCheat");
 
 
     btnNewGame.onclick = function () {
@@ -21,5 +22,10 @@
         modalPlay.style.display = "none";
     };
 
+    btnSetCheat.onclick = function () {
+        //starting a new game is in the playObj
+        allCrystals[0].setCheatValue();
+        modalSettings.style.display = "none";
+    };
 
 

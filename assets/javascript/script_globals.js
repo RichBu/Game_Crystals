@@ -54,6 +54,7 @@ var crystal = {
     currVal: 0,
     qtyPicked: 0,
     totVal: 0,
+    cheatScore: 0,  //what val was when cheat bttn prs. stops score from jumping
 
 
     init: function (configDataIn, index) {
@@ -67,6 +68,7 @@ var crystal = {
         this.currVal = 0;
         this.qtyPicked = 0;
         this.totVal = 0;
+        this.cheatScore = 0;
         if (index <= configDataIn.imgFiles.length) {
             this.imgName = configDataIn.name[index];
             this.fileName = configDataIn.imgDir + configDataIn.imgFiles[index];
@@ -85,6 +87,14 @@ var crystal = {
         this.currVal = 0;
         this.qtyPicked = 0;
         this.totVal = 0;
+        this.cheatScore = 0;
+    },
+
+    setCheatValue: function () {
+        //sets the crystal value = 1 so can guarantee a win
+        this.cheatScore = this.cheatScore + this.currVal - 1;
+        if (this.cheatScore < 0) { this.cheatScore = 0; }
+        this.currVal = 1;
     }
 };
 
@@ -118,8 +128,10 @@ var gameObj = {
         this.numStones = 0;
         for (var i = 0; i < allCrystalsIn.length; i++) {
             //loop thru all the crystals and updata all the scores
+            //so value doesn't "jump" after pressing cheat button
+            var cheatScore = allCrystalsIn[i].cheatScore;
             this.numStones += allCrystalsIn[i].qtyPicked;
-            allCrystalsIn[i].totVal = allCrystalsIn[i].qtyPicked * allCrystalsIn[i].currVal;
+            allCrystalsIn[i].totVal = cheatScore + allCrystalsIn[i].qtyPicked * allCrystalsIn[i].currVal;
             this.score += allCrystalsIn[i].totVal;
         };
         this.left = this.target - this.score;
@@ -127,7 +139,7 @@ var gameObj = {
             this.isGameLost = true;
             this.isGameOver = true;
         };
-        if (this.left == 0 && this.target == 0) {
+        if (this.left === 0 && this.target > 0) {
             //game is over only if the target is not zero
             this.isGameWon = true;
             this.isGameOver = true;
@@ -144,8 +156,27 @@ var gameObj = {
 
     pickRandVal: function (configDataIn) {
         this.target = Math.floor(Math.random() * configDataIn.scoreRandMax) + configDataIn.scoreRandMin;
-    }
+        this.isGameLost = false;
+        this.isGameOver = false;
+        this.isGameWon = false;
+    },
 
+    displayWonLost: function (allCrystalsIn) {
+        if (this.isGameWon) {
+            modalOverWon.style.display = "block";
+            var textOut = "You placed " + this.numStones + " crystals. ";
+            textOut += "Crystal values from left to right are: " + allCrystalsIn[0].currVal + " " + allCrystalsIn[1].currVal + " " + allCrystalsIn[2].currVal + " " + allCrystalsIn[3].currVal;
+            $("#modWonAnswer").text(textOut);
+        } else if (this.isGameLost) {
+            modalOverLost.style.display = "block";
+            var textOut = "You placed " + this.numStones + " but you were over by " + (-1 * this.left) + " points. ";
+            textOut += "Crystal values from left to right are: " + allCrystalsIn[0].currVal + " " + allCrystalsIn[1].currVal + " " + allCrystalsIn[2].currVal + " " + allCrystalsIn[3].currVal;
+            $("#modLostAnswer").text(textOut);
+        } else if (this.target === 0) {
+            //game was never started
+            modalGameBlank.style.display = "block";
+        };
+    }
 };
 
 
@@ -168,7 +199,7 @@ var playObj = {
         //loop thru all the crystals and set random values
         for (var i = 0; i < allCrystalsIn.length; i++) {
             allCrystalsIn[i].resetVal();
-            allCrystalsIn[i].pickRandVal( configData );
+            allCrystalsIn[i].pickRandVal(configData);
         };
         gameObj.pickRandVal(configDataIn);
         gameObj.update(allCrystalsIn);
