@@ -79,7 +79,8 @@ var crystal = {
     },
 
     pickRandVal: function (configDataIn) {
-        this.currVal = Math.floor(Math.random() * configDataIn.crystalRandMax) + configDataIn.crystalRandMin;
+        var rangeVal = (configDataIn.crystalRandMax - configDataIn.crystalRandMin)
+        this.currVal = Math.floor(Math.random() * rangeVal ) + configDataIn.crystalRandMin;
     },
 
     resetVal: function () {
@@ -155,7 +156,7 @@ var gameObj = {
     },
 
     pickRandVal: function (configDataIn) {
-        this.target = Math.floor(Math.random() * configDataIn.scoreRandMax) + configDataIn.scoreRandMin;
+        this.target = Math.floor(Math.random() * (configDataIn.scoreRandMax - configDataIn.scoreRandMin))  + configDataIn.scoreRandMin;
         this.isGameLost = false;
         this.isGameOver = false;
         this.isGameWon = false;
