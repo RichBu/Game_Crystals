@@ -7,7 +7,7 @@
 document.getElementById("navBarCommon").innerHTML = 
 '<div class="container" id="navBarContainer">' + 
 '<div class="navbar-header">' + 
-'    <a class="navbar-brand" href="https://richbu.github.io/Homework_2">Rich Budek</a>' +
+'    <a class="navbar-brand" href="https://richbu.github.io/Bio/">Rich Budek</a>' +
 '</div>' + 
 '<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">' +
 '    <ul class="nav navbar-nav navbar-right">' +
@@ -15,7 +15,7 @@ document.getElementById("navBarCommon").innerHTML =
 //'        <li><a href="play.html">Play</a></li>' +
 //'        <li><a href="contact.html">Hi-Score</a></li>' +
 //'        <li><a href="contact.html">Help</a></li>' +
-'        <li><a href="#">Portfolio</a></li>' +
+'        <li><a href="https://richbu.github.io/Bio/portfolio.html">Portfolio</a></li>' +
 '    </ul>' + 
 '</div>' + 
 '</div>';
