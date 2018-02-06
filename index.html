@@ -4,8 +4,8 @@
 
 <!--  index.html  of Hangman game -->
 
-<!-- by Rich Budek  01/30/2018        -->
-<!-- for NU Bootcamp.  Hangman    -->
+<!-- by Rich Budek  02/05/2018        -->
+<!-- for NU Bootcamp.  Crystal    -->
 
 
 
@@ -74,61 +74,72 @@
                 <!-- left hand colmn is two rows -->
                 <div class="row ">
                 </div>
-                <!-- after the about me header, there is a row with 2 columns -->
+                <!-- but the collection basket of crystals into a row -->
                 <div class="row ">
                     <!-- wrap the left side with "article " tag for SEO engines -->
-                    <div>
-                        <!-- article is two colunns -->
-                        <img id="manPic" src="http://placehold.it/150x150" alt="Placeholder " class="img-thumbnail img-responsive">
+                    <div id="crystalCollect">
+                        <!-- blank area right now -->
+                        <img src="http://placehold.it/50x50" alt="Placeholder " class="img-thumbnail img-responsive imgCrystalContainer">
+                        <img src="http://placehold.it/50x50" alt="Placeholder " class="img-thumbnail img-responsive imgCrystalContainer">
+                        <img src="http://placehold.it/50x50" alt="Placeholder " class="img-thumbnail img-responsive imgCrystalContainer">
+                        <img id="manPic" src="http://placehold.it/50x50" alt="Placeholder " class="img-thumbnail img-responsive">
                     </div>
                 </div>
             </div>
 
             <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 ">
                 <aside>
-                    <div class="row ">
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
-                            <div class="panel panel-info panelMinMargin ">
-                                <div class="panel-heading panelMinPadding ">
-                                    <span>total</span>
-                                </div>
-                                <div class="panel-body panelMinPadding ">
-                                    <span id="lblStatNumGuesses" style="display: block; ">--</span>
-                                </div>
-                            </div>
-                            <div class="panel panel-info panelMinMargin ">
-                                <div class="panel-heading panelMinPadding ">
-                                    <span>left</span>
-                                </div>
-                                <div class="panel-body panelMinPadding ">
-                                    <span id="lblStatGuessesLeft" style="display: block; ">--</span>
-                                </div>
-                            </div>
+                    <!--                    <div class="row ">  -->
+                    <!--                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">  -->
+                    <div class="panel panel-info panelMinMargin ">
+                        <div class="panel-heading panelMinPadding ">
+                            <span>target</span>
                         </div>
-                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">
-                            <div class="panel panel-info panelMinMargin ">
-                                <div class="panel-heading panelMinPadding ">
-                                    <span>wrong</span>
-                                </div>
-                                <div class="panel-body panelMinPadding ">
-                                    <span id="lblStatNumWrong" style="display: block; ">--</span>
-                                </div>
-                            </div>
-                            <div class="panel panel-info panelMinMargin ">
-                                <div class="panel-heading panelMinPadding ">
-                                    <span>correct</span>
-                                </div>
-                                <div class="panel-body panelMinPadding ">
-                                    <span id="lblStatNumCorrect" style="display: block; ">--</span>
-                                </div>
-                            </div>
+                        <div class="panel-body panelMinPadding ">
+                            <span id="lblTarget" style="display: block; ">--</span>
+                        </div>
+                    </div>
+                    <div class="panel panel-info panelMinMargin ">
+                        <div class="panel-heading panelMinPadding ">
+                            <span>current</span>
+                        </div>
+                        <div class="panel-body panelMinPadding ">
+                            <span id="lblCurrent" style="display: block; ">--</span>
+                        </div>
+                    </div>
+                    <!--                        </div>  -->
+
+                    <!--                        <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 ">  -->
+                    <div class="panel panel-info panelMinMargin ">
+                        <div class="panel-heading panelMinPadding ">
+                            <span>left</span>
+                        </div>
+                        <div class="panel-body panelMinPadding ">
+                            <span id="lblLeft" style="display: block; ">--</span>
+                        </div>
+                    </div>
+                    <div class="panel panel-info panelMinMargin ">
+                        <div class="panel-heading panelMinPadding ">
+                            <span># stones</span>
+                        </div>
+                        <div class="panel-body panelMinPadding ">
+                            <span id="lblNumStones" style="display: block; ">--</span>
                         </div>
                     </div>
                 </aside>
             </div>
+
         </div>
- 
+        <div class="row">
+            <p></p>
+        </div>
+        <div class="row" id="buttonRow">
+        </div>
+        <div class="row">
+            <p></p>
+        </div>
     </div>
+
     <!-- main row -->
 
 
@@ -205,8 +216,8 @@
             <p>This game is meant to run inside of a browser.
             </p>
             <p>When the game starts, you are given a target from 19 to 120 that you must match. Each gem stone is given a random
-                number from 1 to 12, but you do not see the score. By clicking on a stone, you collect the stones and the game
-                gives you your score.
+                number from 1 to 12, but you do not see the score. By clicking on a stone, you collect the stones and the
+                game gives you your score.
             </p>
             <p> </p>
             <p>You win the game when you match the target score exactly</p>
@@ -232,7 +243,8 @@
                 some of the more advanced display functions and popups.
             </p>
             <p>Javascript and jQuery are the languages that do all of the processing and also manipulates the page's element's
-                using jQuery.  All the crystals are stored as objects in an array and then placed into the collection area using jAppend.
+                using jQuery. All the crystals are stored as objects in an array and then placed into the collection area
+                using jAppend.
             </p>
             <p>The windows is responsive (liquid) will change based on the size of the screen, with buttons moving, etc. as
                 the screen width changes. Dialog is presented to the user using modals.
@@ -286,25 +298,63 @@
     <script src="assets/javascript/script_play.js "></script>
     <script>
 
-        function evalEntry(charIn) {
-            //the character coming in can come from mobile entry
-            //or the keyboard
-        };
-
-
-        //activate BootStrap tool tips
-        //but don't turn on for phone / tablet
         $(document).ready(function () {
+            //activate BootStrap tool tips
+            //but don't turn on for phone / tablet
             $('[data-toggle="tooltip"]').tooltip();
+
+            //create the crystal array
+            var endVal = configData.imgQty;
+            for (var i = 0; i < endVal; i++) {
+                var newCrystal = jQuery.extend(true, {}, crystal);
+                newCrystal.init(configData, i);
+                allCrystals.push(newCrystal);
+            };
+
+            // push new buttons into the div
+            var buttonRowDiv = $("#buttonRow");
+            var bttnArray = [];
+            var bttnNew;
+            var bttnImgString;
+            var bttnImgNew;  //actual image
+
+            //loop thru all crystals and add as buttons
+            var endVal = allCrystals.length;
+            for (var i = 0; i < endVal; i++) {
+                bttnNew = $("<button>");
+                bttnImgString = '<img src="' + allCrystals[i].fileName + '">';
+                bttnImgNew = $(bttnImgString);
+                //add value of crystal to the attr flag
+                bttnNew.attr("data-crystal",i);
+                bttnNew.on( "click", evalButtonPress );
+                bttnNew.append(bttnImgNew);
+                buttonRowDiv.append(bttnNew);
+                //$("#buttonRow").append(bttnNew);
+            };
+
+            gameObj.init();   //init all the game variables
+            gameObj.update( allCrystals );  //recalc all the crystals
+            gameObj.redraw( configData );
+
+
+
+            function evalButtonPress() {
+                //the character coming in can come from mobile entry
+                //or the keyboard
+                var currentClickedBttn = $(this);
+                var buttonVal = currentClickedBttn.attr("data-crystal");
+                allCrystals[buttonVal].qtyPicked++;
+                gameObj.update( allCrystals );
+                gameObj.redraw( configData );
+                console.log( "button clicked" + " " + buttonVal );
+            };
+
+
+
+            //here is the main loop now for key presses
+            document.onkeyup = function (event) {
+            }
         });
-
-        //initialize once on startup  will also be the play button
-        gameGuess.init();
-
-        //here is the main loop now for key presses
-        document.onkeyup = function (event) {
-        }
-
     </script>
 </body>
 

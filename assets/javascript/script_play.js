@@ -17,7 +17,7 @@
 
     btnNewGame.onclick = function () {
         //starting a new game is in the playObj
-        playObj.startNewGame();
+        playObj.startNewGame( configData, allCrystals );
         modalPlay.style.display = "none";
     };
 

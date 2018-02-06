@@ -15,105 +15,139 @@
 
 const constWordLenMax = 20;
 
+var configData = {
+    lblTarget: "#lblTarget",
+    lblCurrent: "#lblCurrent",
+    lblLeft: "#lblLeft",
+    lblNumStones: "#lblNumStones",
+    imgDir: "assets/images/",
+    imgQty: 4,
+    imgFiles: ["cryBluHeart.png",
+        "cryGoldRSqr.png",
+        "cryPurRect.png",
+        "cryRedOval.png"],
+    name: ["Blue Heart",
+        "Gold Square",
+        "Purple Rectangle",
+        "Red Oval"
+    ],
+    //    color: [ rgb(43,79, 174)       ],
+    //    colorNum: [ #2B4FAE, #FBBC18, #7D1C85, #A00019 ],
+    colorName: ["Blue", "Gold", "Purple", "Red"],
+    crystalRandMin: 1,
+    crystalRandMax: 12,
+    scoreRandMin: 19,
+    scoreRandMax: 120,
+    isShowButtonVal: false
+};
 
 
-var gameGuess = {
-    resultsChr: [], //char array
-    resultsDispStr: "",  //result display string
-    lettersPicked: [],
-    lettersPickedStr: "",  //string value of letter picked
-    lettersGoodChr: [],
-    lettersGoodStr: "",
-    lettersBadChr: [],
-    lettersBadStr: "",
-    state: 0,               //-1=init  0=input data  1=rdy to play  2=started play  3=guessing started  4=guess timing  5=guess timed out  10=evaluating  15=display result
-    numGuesses: 0,
-    numWrong: 0,
-    numCorrect: 0,
-    numLeft: 0,
-    numLimit: 7,
-    numCharRight: 0,
-    timeStart: "",
-    timeElapsedDT: "",
-    timeElapsedSec: 0,
-    timeLimit: 0,
-    isGameOverMatch: false,     //game is over because a match
-    isGameOverLost: false,      //game is over because ran out of guesses
-    isGameOverTimeOut: false,  //game is over, timed out
-    isCharInDuplicate: false,
+//var configData =  configDataObj;
+
+var crystal = {
+    //    color: 0,
+    imgName: "",
+    fileName: "",
+    htmlId: "",
+    colorDraw: 0,
+    colorName: "",
+    currVal: 0,
+    qtyPicked: 0,
+    totVal: 0,
 
 
-    clearDisp: function () {
-        //clear out the disp strings
-        //clear results array
-        var stopVal = this.resultsChr.length;
-        for (i = 0; i < stopVal; i++) {
-            this.resultsChr.pop();
-        }
-        this.resultsDispStr = "";
-
-        stopVal = this.lettersBadChr.length;
-        for (i = 0; i < stopVal; i++) {
-            this.lettersBadChr.pop();
-        }
-        this.lettersBadStr = "";
-
-        stopVal = this.lettersGoodChr.length;
-        for (i = 0; i < stopVal; i++) {
-            this.lettersGoodChr.pop();
-        }
-        this.lettersGoodStr = "";
+    init: function (configDataIn, index) {
+        //initialize the values of the crystal
+        //this[index].color = 0;
+        this.imgName = "";
+        this.fileName = "";
+        this.htmlId = "";
+        this.colorDraw = 0;
+        this.colorName = "";
+        this.currVal = 0;
+        this.qtyPicked = 0;
+        this.totVal = 0;
+        if (index <= configDataIn.imgFiles.length) {
+            this.imgName = configDataIn.name[index];
+            this.fileName = configDataIn.imgDir + configDataIn.imgFiles[index];
+            this.name = configDataIn.name[index];
+            //this.colorDraw = configDataIn.color[crysNumIn];
+            this.colorName = configDataIn.colorName[index];
+        };
     },
+
+    pickRandVal: function (configDataIn) {
+        this.currVal = Math.floor(Math.random() * configDataIn.crystalRandMax) + configDataIn.crystalRandMin;
+    },
+
+    resetVal: function () {
+        //rest the values 
+        this.currVal = 0;
+        this.qtyPicked = 0;
+        this.totVal = 0;
+    }
+};
+
+
+var allCrystals = [];
+
+
+
+var gameObj = {
+    target: 0,
+    score: 0,
+    left: 0,
+    numStones: 0,
+    isGameOver: false,
+    isGameLost: false,
+    isGameWon: false,
 
     init: function () {
-        this.clearDisp();
-        //clear letters picked array
-        var stopVal = this.lettersPicked.length;
-        for (var i = 0; i < stopVal; i++) {
-            this.lettersPicked.pop();
-        }
-        this.lettersPickedStr = "";
-        this.state = -1;
-        this.numGuesses = 0;
-        this.numWrong = 0;
-        this.numCorrect = 0;
-        this.numLeft = this.numLimit;
-        this.numCharRight = 0;
-        this.timeStart = "";
-        this.timeElapsedDT = ""
-        this.timeElapsedSec = 0;
-        this.timeLimit = 0;
-        this.isGameOverLost = false;
-        this.isGameOverMatch = false;
-        this.isGameOverTimeOut = false;
-        this.isCharInDuplicate = false;
+        this.target = 0;
+        this.score = 0;
+        this.left = 0;
+        this.numStones = 0;
+        this.isGameOver = false;
+        this.isGameLost = false;
+        this.isGameWon = false;
     },
 
-    compPicksToAnswer: function (answerIn) {
-     
+    update: function (allCrystalsIn) {
+        //will update all of the scores
+        this.score = 0;
+        this.numStones = 0;
+        for (var i = 0; i < allCrystalsIn.length; i++) {
+            //loop thru all the crystals and updata all the scores
+            this.numStones += allCrystalsIn[i].qtyPicked;
+            allCrystalsIn[i].totVal = allCrystalsIn[i].qtyPicked * allCrystalsIn[i].currVal;
+            this.score += allCrystalsIn[i].totVal;
+        };
+        this.left = this.target - this.score;
+        if (this.left < 0) {
+            this.isGameLost = true;
+            this.isGameOver = true;
+        };
+        if (this.left == 0 && this.target == 0) {
+            //game is over only if the target is not zero
+            this.isGameWon = true;
+            this.isGameOver = true;
+        };
     },
 
-    redrawResultsStr: function (answerIn) {
-        //redraw (refill) the results str
-        this.clearDisp();
-     
-        //put strings out to display
-        document.querySelector("#Disp-Results").textContent = this.resultsDispStr;
-        document.querySelector("#Disp-PicksGood").textContent = this.lettersGoodStr;
-        document.querySelector("#Disp-PicksBad").textContent = this.lettersBadStr;
-
-        //update stats on display
-        document.querySelector("#lblStatNumGuesses").textContent = this.numGuesses;
-        document.querySelector("#lblStatGuessesLeft").textContent = this.numLeft;
-        document.querySelector("#lblStatNumCorrect").textContent = this.numCorrect;
-        document.querySelector("#lblStatNumWrong").textContent = this.numWrong;
+    redraw: function (configDataIn) {
+        //write to the display
+        $(configDataIn.lblCurrent).text(this.score);
+        $(configDataIn.lblLeft).text(this.left);
+        $(configDataIn.lblNumStones).text(this.numStones);
+        $(configDataIn.lblTarget).text(this.target);
     },
 
-
-    pushLetterPicked: function (chrIn, answerStrIn) {
-         }
+    pickRandVal: function (configDataIn) {
+        this.target = Math.floor(Math.random() * configDataIn.scoreRandMax) + configDataIn.scoreRandMin;
+    }
 
 };
+
 
 
 
@@ -122,55 +156,23 @@ var playObj = {
     //items associated with game play
 
     playState: 0,  //wat state is the game in
-    imgLoc: "assets/",
-    imgNames: [
-        "ManFree_01.png",   //"he's free"
-        "Man_05.png",   //head = 1 wrong
-        "Man_06.png",   //body
-        "Man_07.png",   //left foot
-        "Man_08.png",   //right foot
-        "Man_09.png",   //left arm
-        "Man_10.png",   //right arm
-        "Man_lost.png",   //dead        
-        "Init_pic.png",  //on loading
-        "Ready_pic.png",        //1 = ready
-        "Start_02.png",  //press any letter  when bad && good both = 0
-    ],  //array of image names
 
-    displayCorrectPic: function (gameGuessObjIn) {
-        //put the correct picture onto the display
-        var imgName = "";  //name of the pict file to pull up
-        imgName = this.imgLoc + this.imgNames[4];
-        if (gameGuessObjIn.numGuesses == 0 && gameGuessObjIn.numCorrect == 0 && gameGuessObjIn.numWrong == 0) {
-            imgName = this.imgLoc + this.imgNames[10];
-        } else {
-            if (gameGuessObjIn.numWrong == 0) {
-                //special case, the # guess wrong is still zero, but picked a char already
-                imgName = this.imgLoc + this.imgNames[0];
-            } else {
-                //so game has started, need offset to picture
-                var imgOffsetNum = 0;
-                var imgNumToPull = imgOffsetNum + gameGuessObjIn.numWrong;
-                imgName = this.imgLoc + this.imgNames[imgNumToPull];
-            }
-        }
-        var imgElem = document.getElementById('manPic');
-        imgElem.src = imgName;
-    },
 
     init: function () {
         //reset the variables for play
         this.playState = 0;
     },
 
-    startNewGame: function () {
+    startNewGame: function (configDataIn, allCrystalsIn) {
         //everything needed for a new game
-        this.init();
-        gameGuess.init();
-        gameGuess.isGameOverLost = false;
-        gameGuess.isGameOverMatch = false;
-        wordListObj.pickNextWordFromDict( wordListDict );
-        playObj.displayCorrectPic(gameGuess);
+        //loop thru all the crystals and set random values
+        for (var i = 0; i < allCrystalsIn.length; i++) {
+            allCrystalsIn[i].resetVal();
+            allCrystalsIn[i].pickRandVal( configData );
+        };
+        gameObj.pickRandVal(configDataIn);
+        gameObj.update(allCrystalsIn);
+        gameObj.redraw(configDataIn);
     }
 };
 
