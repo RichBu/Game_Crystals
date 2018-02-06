@@ -1,6 +1,6 @@
 
 /* script.js  by Rich Budek 01/30/2018  */
-/*            for Hangman   */
+/*            for Crystals  */
 
 /* routine to make a common nav bar across all of the pages */
 
@@ -15,7 +15,7 @@ document.getElementById("navBarCommon").innerHTML =
 //'        <li><a href="play.html">Play</a></li>' +
 //'        <li><a href="contact.html">Hi-Score</a></li>' +
 //'        <li><a href="contact.html">Help</a></li>' +
-'        <li><a href="https://richbu.github.io/Bio/portfolio.html">Portfolio</a></li>' +
+'        <li><a href="https://richbu.github.io/Bio/portfolio.html">Portfolio</a></li>' +  
 '    </ul>' + 
 '</div>' + 
 '</div>';
