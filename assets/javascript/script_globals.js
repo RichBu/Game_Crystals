@@ -20,6 +20,8 @@ var configData = {
     lblCurrent: "#lblCurrent",
     lblLeft: "#lblLeft",
     lblNumStones: "#lblNumStones",
+    lblNumWins: "#lblNumWins",
+    lblNumLosses: "#lblNumLosses",
     imgDir: "assets/images/",
     imgQty: 4,
     imgFiles: ["cryBluHeart.png",
@@ -31,6 +33,7 @@ var configData = {
         "Purple Rectangle",
         "Red Oval"
     ],
+    histQty: 3,  //how many history crystals to store
     //    color: [ rgb(43,79, 174)       ],
     //    colorNum: [ #2B4FAE, #FBBC18, #7D1C85, #A00019 ],
     colorName: ["Blue", "Gold", "Purple", "Red"],
@@ -55,6 +58,7 @@ var crystal = {
     qtyPicked: 0,
     totVal: 0,
     cheatScore: 0,  //what val was when cheat bttn prs. stops score from jumping
+    histDisplay: false,  //display if in the history stack
 
 
     init: function (configDataIn, index) {
@@ -69,6 +73,7 @@ var crystal = {
         this.qtyPicked = 0;
         this.totVal = 0;
         this.cheatScore = 0;
+        this.histDisplay = false;
         if (index <= configDataIn.imgFiles.length) {
             this.imgName = configDataIn.name[index];
             this.fileName = configDataIn.imgDir + configDataIn.imgFiles[index];
@@ -101,6 +106,7 @@ var crystal = {
 
 
 var allCrystals = [];
+var histCrystals = [];  //history of which ones picked is shown at the top
 
 
 
@@ -108,19 +114,33 @@ var gameObj = {
     target: 0,
     score: 0,
     left: 0,
+    wins: 0,
+    losses: 0,
     numStones: 0,
     isGameOver: false,
     isGameLost: false,
     isGameWon: false,
+    haveSetWins: false,
 
     init: function () {
         this.target = 0;
         this.score = 0;
         this.left = 0;
+        this.wins = 0;
+        this.losses = 0;
         this.numStones = 0;
         this.isGameOver = false;
         this.isGameLost = false;
         this.isGameWon = false;
+        this.haveSetWins = false;
+    },
+
+    newGame: function () {  //does init except does not clear wins, losses
+        var oldWins = this.wins;
+        var oldLosses = this.losses;
+        this.init();
+        this.wins = oldWins;
+        this.losses = oldLosses;
     },
 
     update: function (allCrystalsIn) {
@@ -139,11 +159,19 @@ var gameObj = {
         if (this.left < 0) {
             this.isGameLost = true;
             this.isGameOver = true;
+            if ( !this.haveSetWins ) {
+                this.haveSetWins = true;
+                this.losses++;
+            };
         };
         if (this.left === 0 && this.target > 0) {
             //game is over only if the target is not zero
             this.isGameWon = true;
             this.isGameOver = true;
+            if ( !this.haveSetWins ) {
+                this.haveSetWins = true;
+                this.wins++;
+            };
         };
     },
 
@@ -153,6 +181,8 @@ var gameObj = {
         $(configDataIn.lblLeft).text(this.left);
         $(configDataIn.lblNumStones).text(this.numStones);
         $(configDataIn.lblTarget).text(this.target);
+        $(configDataIn.lblNumWins).text(this.wins);
+        $(configDataIn.lblNumLosses).text(this.losses);
     },
 
     pickRandVal: function (configDataIn) {
@@ -202,6 +232,7 @@ var playObj = {
             allCrystalsIn[i].resetVal();
             allCrystalsIn[i].pickRandVal(configData);
         };
+        gameObj.haveSetWins = false;
         gameObj.pickRandVal(configDataIn);
         gameObj.update(allCrystalsIn);
         gameObj.redraw(configDataIn);

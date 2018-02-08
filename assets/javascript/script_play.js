@@ -13,11 +13,20 @@
     var modalKeyDup = document.getElementById('modKeyDup');
 
     var btnNewGame = document.getElementById("btnNewGame");
+    var btnResetGame = document.getElementById("btnResetGame");
     var btnSetCheat = document.getElementById("btnSetCheat");
 
 
     btnNewGame.onclick = function () {
         //starting a new game is in the playObj
+        playObj.startNewGame( configData, allCrystals );
+        modalPlay.style.display = "none";
+    };
+
+    btnResetGame.onclick = function () {
+        //starting a new game is in the playObj
+        gameObj.wins = 0;
+        gameObj.losses = 0;
         playObj.startNewGame( configData, allCrystals );
         modalPlay.style.display = "none";
     };

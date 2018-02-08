@@ -77,12 +77,14 @@
                 <!-- but the collection basket of crystals into a row -->
                 <div class="row ">
                     <!-- wrap the left side with "article " tag for SEO engines -->
-                    <div id="crystalCollect">
+                    <div id="histRow">
                         <!-- blank area right now -->
                         <h4>History of selections (not working yet)</h4>
+                        <!--
                         <img src="http://placehold.it/50x50" alt="Placeholder " class="img-thumbnail img-responsive imgCrystalContainer">
                         <img src="http://placehold.it/50x50" alt="Placeholder " class="img-thumbnail img-responsive imgCrystalContainer">
                         <img src="http://placehold.it/50x50" alt="Placeholder " class="img-thumbnail img-responsive imgCrystalContainer">
+                        -->
                     </div>
                 </div>
             </div>
@@ -124,6 +126,22 @@
                         </div>
                         <div class="panel-body panelMinPadding ">
                             <span id="lblNumStones" style="display: block; ">--</span>
+                        </div>
+                    </div>
+                    <div class="panel panel-info panelMinMargin ">
+                        <div class="panel-heading panelMinPadding ">
+                            <span>wins</span>
+                        </div>
+                        <div class="panel-body panelMinPadding ">
+                            <span id="lblNumWins" style="display: block; ">--</span>
+                        </div>
+                    </div>
+                    <div class="panel panel-info panelMinMargin ">
+                        <div class="panel-heading panelMinPadding ">
+                            <span>losses</span>
+                        </div>
+                        <div class="panel-body panelMinPadding ">
+                            <span id="lblNumLosses" style="display: block; ">--</span>
                         </div>
                     </div>
                 </aside>
@@ -296,6 +314,9 @@
                     <span>
                         <button style="Float: left; " id="btnNewGame" class="btn btn-default bigButton " data-toggle="tooltip " title="Start a new game">New Game</button>
                     </span>
+                    <span>
+                        <button style="Float: left; " id="btnResetGame" class="btn btn-default bigButton " data-toggle="tooltip " title="Reset wins/losses">Reset Game</button>
+                    </span>
                 </div>
             </div>
         </div>
@@ -332,6 +353,14 @@
                 allCrystals.push(newCrystal);
             };
 
+            //create the history array
+            var endVal = configData.histQty;
+            for (var i = 0; i < endVal; i++) {
+                var newCrystal = jQuery.extend(true, {}, crystal);
+                newCrystal.init(configData, i);
+                histCrystals.push(newCrystal);
+            };
+
             // push new buttons into the div
             var buttonRowDiv = $("#buttonRow");
             var bttnArray = [];
@@ -352,6 +381,23 @@
                 buttonRowDiv.append(bttnNew);
                 //$("#buttonRow").append(bttnNew);
             };
+
+            //loop thru all history crystals and add as history buttons
+            var imgNew;
+            var histRowDiv = $("#histRow");
+            var testImg = 'http://placehold.it/50x50';
+            var styleStr = 'width: 50px; height: 50px';
+            var classStr = 'img-thumbnail img-responsive imgCrystalContainer';
+            var endVal = configData.histQty;
+            for (var i = 0; i < endVal; i++) {
+                imgNew = $("<img>");
+                imgNew.attr("src", testImg);
+                //add position of crystal to the attr flag
+                imgNew.attr("style", styleStr );
+                imgNew.attr("class", classStr );
+                histRowDiv.append(imgNew);
+            };
+
 
             gameObj.init();   //init all the game variables
             gameObj.isGameOver = true;  //first time thru loop, set game over
